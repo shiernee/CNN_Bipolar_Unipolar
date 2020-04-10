@@ -55,6 +55,31 @@ class Ellipsoid:
         return 4 * np.pi * np.sqrt(tmp ** (1 / p))
 
 
+class AbottElectrode:
+    """ create 4x 4 square grid mesh with 0.3 unit distance (cm) - 3mm - same as Abbott inter-distance"""
+    def __init__(self):
+        return
+
+    @staticmethod
+    def create_one_mesh(idx, coord, local_axis1, local_axis2):
+        rand_coord = coord[idx]
+        local_axis1_tmp = local_axis1[idx] * 0.3
+        local_axis2_tmp = local_axis2[idx] * 0.3
+        mesh = []
+        for i in range(4):
+            tmp_x = rand_coord + local_axis1_tmp * i
+            for j in range(4):
+                tmp = tmp_x + local_axis2_tmp * j
+                mesh.append(tmp)
+        return mesh
+
+    def create_no_of_mesh(self, number_of_time_to_map, coord, local_axis1, local_axis2):
+        map_mesh = []
+        for map in range(number_of_time_to_map):
+            idx = 34  # np.random.randint(0, no_pt, 1)]
+            mesh = self.create_one_mesh(idx, coord, local_axis1, local_axis2)
+            map_mesh.append(mesh)
+        return map_mesh
 
 
 if __name__ == '__main__':
@@ -75,31 +100,11 @@ if __name__ == '__main__':
     local_axis1 = point_cloud_instances['local_axis1']
     local_axis2 = point_cloud_instances['local_axis2']
 
-
-    # create square grid mesh with 0.3 unit distance (cm) - 3mm - same as Abbott inter-distance
     number_of_time_to_map = 1 #350
+    abott_electrode = AbottElectrode()
+    map_mesh = abott_electrode.create_no_of_mesh(number_of_time_to_map, coord, local_axis1, local_axis2)
 
-    map_mesh = []
-    for map in range(number_of_time_to_map):
-        print('map {}'.format(map))
-        idx = 34  #np.random.randint(0, no_pt, 1)]
-        rand_coord = coord[idx]
-        local_axis1_tmp = local_axis1[idx] * 0.3
-        local_axis2_tmp = local_axis2[idx] * 0.3
-        print(local_axis2[idx])
-        mesh = []
-        print('rand_coord:{} '.format(rand_coord))
-        for i in range(4):
-            tmp_x = rand_coord + local_axis1_tmp * i
-            for j in range(4):
-                print('i {}, j {}'.format(i, j))
-                tmp = tmp_x + local_axis2_tmp * j
-                print(tmp)
-                mesh.append(tmp)
 
-        map_mesh.apppend(mesh)
-
-    quit()
 
     time_pt = V.shape[0]
     sqr_grid = int(np.sqrt(V.shape[1]))
