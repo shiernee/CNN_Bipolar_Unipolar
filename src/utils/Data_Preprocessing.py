@@ -71,12 +71,13 @@ class AbottElectrode:
             for j in range(4):
                 tmp = tmp_x + local_axis2_tmp * j
                 mesh.append(tmp)
+        mesh = np.array(mesh).squeeze()
         return mesh
 
     def create_no_of_mesh(self, number_of_time_to_map, coord, local_axis1, local_axis2):
         map_mesh = []
         for map in range(number_of_time_to_map):
-            idx = 34  # np.random.randint(0, no_pt, 1)]
+            idx = np.random.randint(0, no_pt, 1)
             mesh = self.create_one_mesh(idx, coord, local_axis1, local_axis2)
             map_mesh.append(mesh)
         return map_mesh
